@@ -8,11 +8,13 @@ from helpers import Helpers, Endpoints
 class TestRegisterEndpoint:
 
     @allure.title('Тест на создание уникального пользователя')
-    def test_create_unique_user_return_success_true_and_200(self, create_user):
+    def test_create_unique_user_return_success_true_and_200(self):
 
-        reg_response = create_user
+        payload = Helpers.UNIQUE_USER_DATA  # Создаем уникальный набор данных для регистрации пользователя
 
-        assert reg_response[1].status_code == 200 and reg_response[1].json()["success"] is True, \
+        reg_response = requests.post(f"{Helpers.BASE_URL}{Endpoints.REGISTER_ENDPOINT}", data=payload)  # Регистрируем
+
+        assert reg_response.status_code == 200 and reg_response.json()["success"] is True, \
             f"status code is {reg_response.status_code}, response text is {reg_response.json()}"
 
     @allure.title('Тест на создание пользователя, который уже зарегестрирован')
